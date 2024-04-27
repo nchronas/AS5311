@@ -6,6 +6,17 @@
 
             Quad A --------------------  D2
             Quad B --------------------  D3
+
+            2.2" SSD1305 OLED Display on SPI bus
+            
+            SCK    --------------------  D13
+            MOSI   --------------------  D11
+            CS     --------------------  D7
+            D/C    --------------------  D6
+            RST    --------------------  D8
+            
+            Units Switch --------------  D4
+            Zero Switch ---------------  D5           
                     
 //============================================================================================
 */
@@ -40,9 +51,11 @@ void loop() {
     // using the dtostrf function below since this sets the number of decimal places for either metric or imperial readings
     dtostrf(mm,7,3,Reading);
 
-
+  u8g.firstPage();  
+  do {
     draw();
-   
+  } while( u8g.nextPage() );
+
     Serial.println(mm);
     delay(500);    
 }
