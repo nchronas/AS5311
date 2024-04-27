@@ -7,7 +7,16 @@
             Quad A --------------------  D2
             Quad B --------------------  D3
 
-            1.3" 128x64 SSD1306 OLED Display on I2C bus         
+            2.2" SSD1305 OLED Display on SPI bus
+            
+            SCK    --------------------  D13
+            MOSI   --------------------  D11
+            CS     --------------------  D7
+            D/C    --------------------  D6
+            RST    --------------------  D8
+            
+            Units Switch --------------  D4
+            Zero Switch ---------------  D5           
                     
 //============================================================================================
 */
@@ -28,6 +37,14 @@ void setup() {
   u8g.setFont(u8g_font_p01type);
 }
 
+void u8g_prepare(void) 
+{
+  u8g.setFont(u8g_font_6x10);
+  u8g.setFontRefHeightExtendedText();
+  u8g.setDefaultForegroundColor();
+  u8g.setFontPosTop();
+}
+
 void loop() {
  
     long position = Encoder1.read();
@@ -36,9 +53,16 @@ void loop() {
     // using the dtostrf function below since this sets the number of decimal places for either metric or imperial readings
     dtostrf(mm,7,3,Reading);
 
-    u8g.drawStr(0,28,"Y");
-    u8g.drawStr( 24, 28, Reading);
-    u8g.drawStr( 110, 28, "mm");
+    // u8g.drawStr(0,28,"Y");
+    // u8g.drawStr( 24, 28, Reading);
+    // u8g.drawStr( 110, 28, "mm");
+
+    u8g_prepare();
+
+  u8g.setFont(u8g_font_unifont);
+  u8g.drawStr(2, 19, "Welcome");
+  u8g.drawStr(2, 38, "to");
+  u8g.drawStr(2, 57, "Mybotic :)");
 
     Serial.println(mm);
     delay(50);    
