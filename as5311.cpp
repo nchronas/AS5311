@@ -1,48 +1,30 @@
+// =========================HEADER=============================================================
+/*
+   Arduino Uno/Nano/328p Hardware Setup
+   
+            Quadrature inputs from AS5311
 
-// Quadrature inputs from AS5311
-
-// Quad A --------------------  D2
-// Quad B --------------------  D3
-
-// Units Switch --------------  D4 
-
+            Quad A --------------------  D2
+            Quad B --------------------  D3
+                    
+//============================================================================================
+*/
+#define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
 
-
-// Switch debounce counters
-long lastDebounceTime1 = 0;
-long oldPosition = -999;
-long newPosition = 0;
-
-char Reading2[9];
+long position = 0;
 
 Encoder Encoder1(2, 3);
 
 void setup() {
-  
- pinMode(5,INPUT);    // push button to zero display count  
- 
+   Serial.begin(9600);
 }
 
 void loop() {
- 
-    // check pin 5                    // Zero display count
-    if(digitalRead(5) == LOW){
-       if ((millis() - lastDebounceTime1) > 200) {
-        lastDebounceTime1 = millis();
-        Encoder1.readAndReset();
-       }
-    }
- 
-    newPosition = Encoder1.read();
-    if (newPosition != oldPosition) {
-        oldPosition = newPosition;
-    }
-    mm = (float)newPosition/512.000; 
+   
+    position = Encoder1.read();
+    float mm = (float)position/512.000; 
 
-    // using the dtostrf function below since this sets the number of decimal places for either metric or imperial readings
-    dtostrf(mm,7,3,Reading2);
-
-    serial.println(mm);
+    Serial.println(mm);
     delay(50);    
 }
